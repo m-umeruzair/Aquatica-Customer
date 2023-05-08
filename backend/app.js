@@ -5,6 +5,7 @@ const dotenv = require("dotenv");
 const signup= require('./routes/signUp')
 const login= require('./routes/login')
 const getProduct= require('./routes/getProduct')
+const forgotpassword= require('./routes/forgotpassword')
 
 
 const DB_CONNECTION_STRING= 'mongodb+srv://umer123:umer123@cluster0.4rplm.mongodb.net/Aquatica'
@@ -26,6 +27,7 @@ app.use(express.urlencoded({ extended: false }));
 app.use(signup)
 app.use(login)
 app.use(getProduct)
+app.use(forgotpassword)
 
 
 
