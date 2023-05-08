@@ -1,13 +1,38 @@
 import React, { useState } from 'react'
-import {StyleSheet, Text, View, TextInput, TouchableOpacity,Modal,TouchableHighlight,Alert} from 'react-native'
+import {StyleSheet, Text, View, TextInput, TouchableOpacity,Alert} from 'react-native'
 import {colors} from '../../globals/style'
 import { AntDesign,Ionicons } from '@expo/vector-icons'; 
 import axios from 'axios';
 
-const ChangePassword = ({navigation}) => {
+const ChangePassword = ({route,navigation}) => {
   const [passwordFocus, setPasswordFocus] = useState(false)
     const [showPassword, setShowPassword] = useState(false)
     const [password,setPassword]= useState(null)
+    const params= route.params
+    const showAlert1 = () =>{
+      Alert.alert(
+         'Password updated successfully'
+      )
+   }
+   const showAlert2 = () =>{
+    Alert.alert(
+       'Could not update password'
+    )
+ }
+
+  function updatePassword(){
+    axios.put('http://192.168.0.104:5000/updatepassword',{data:{
+      email:params.email,
+      password:password
+    }}).then((response)=>{
+      if(response.status==200){
+        showAlert1()
+        navigation.navigate('signin')
+      }
+    }).catch(error=>{
+      showAlert2()
+    })
+  }
   return (
    <View style={styles.container}>
      <Text style={styles.title}>Change Password</Text>
@@ -20,7 +45,7 @@ const ChangePassword = ({navigation}) => {
              <Ionicons name={showPassword ==false? "eye-off" : 'eye'} size={24}  color={passwordFocus===true ? colors.white : colors.dark}
              onPress={()=>(setShowPassword(!showPassword))}/>
         </View>
-        <TouchableOpacity  style={styles.btn} ><Text style={styles.btnText}>Submit</Text></TouchableOpacity>
+        <TouchableOpacity onPress={updatePassword}  style={styles.btn} ><Text style={styles.btnText}>Submit</Text></TouchableOpacity>
    </View>
   )
 }

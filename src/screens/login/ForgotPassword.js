@@ -16,7 +16,7 @@ const ForgotPassword = ({navigation}) => {
         Alert.alert(
            'OTP Verified'
         )
-        navigation.navigate('changepassword')
+        navigation.navigate('changepassword',{email:email})
         setShowModal(false)
      }
 

@@ -7,7 +7,7 @@ import axios from 'axios';
 
 
 
-const  SignUpScreen = () => {
+const  SignUpScreen = ({navigation}) => {
     
     const [emailFocus, setEmailFocus] = useState(false)
     const [passwordFocus, setPasswordFocus] = useState(false)
@@ -56,7 +56,7 @@ const  SignUpScreen = () => {
           email:email,
           phoneNumber:phoneNumber
         }
-       }).catch(error=> console.log(error))
+       }).then(navigation.navigate('signin')).catch(error=> console.log(error))
     }
     else{
         showAlert2()
