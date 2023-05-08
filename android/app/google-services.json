@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "445573441256",
+    "project_id": "aquatica-74c35",
+    "storage_bucket": "aquatica-74c35.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:445573441256:android:220825b03a82cdb60dcb5d",
+        "android_client_info": {
+          "package_name": "com.android.aquatica"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "445573441256-d7s4id0qv0v0vlj989en453a6utkn6oj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7AAsgR3TknpA52QdTJzhUBqVfbGwzGuY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "445573441256-d7s4id0qv0v0vlj989en453a6utkn6oj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
