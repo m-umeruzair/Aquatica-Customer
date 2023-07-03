@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 const User= new mongoose.Schema({
     fullName:{
         type:String,
-        
+        required:true
     },
     cnic:{
         type:Number,
@@ -20,7 +20,7 @@ const User= new mongoose.Schema({
     },
     address:{
         type:String,
-        
+        required:true
     },
     phoneNumber:{
        type:String,

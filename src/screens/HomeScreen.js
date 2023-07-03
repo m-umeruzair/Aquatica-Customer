@@ -10,8 +10,8 @@ import { colors } from '../globals/style'
 const HomeScreen = ({navigation}) => {
   return (
     <View style={styles.container}>
-        <StatusBar/>
-        <HomeHeadNav/>
+        <StatusBar />
+        <HomeHeadNav navigation={navigation}/>
         {/* <View style={styles.searchbox}>
         <AntDesign name="search1" size={24} color="black" />
         <TextInput style={styles.searchInput} placeholder='search'></TextInput>
@@ -28,7 +28,6 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: colors.white,
         alignItems: 'center',
-        
         width:'100%'
       },
       searchbox:{

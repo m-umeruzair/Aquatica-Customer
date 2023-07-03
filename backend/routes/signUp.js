@@ -51,7 +51,9 @@ router.post('/sign-up', async(req,res)=>{
     const user=new User({
         email:req.body.email,
         password:hashedPassword,
-        phoneNumber:req.body.phoneNumber
+        phoneNumber:req.body.phoneNumber,
+        address:req.body.address,
+        fullName:req.body.fullName
     })
     const save= await user.save()
     res.status(200).send("Object created")

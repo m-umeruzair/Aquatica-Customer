@@ -2,8 +2,9 @@ import React, { useState } from 'react'
 import {StyleSheet, Text, View, TextInput, TouchableOpacity,Modal,TouchableHighlight,Alert} from 'react-native'
 import {colors,hr80} from '../../globals/style'
 import logo from '../../../assets/logo.png'
-import { AntDesign,Ionicons } from '@expo/vector-icons'; 
+import { AntDesign,Ionicons,SimpleLineIcons,MaterialCommunityIcons } from '@expo/vector-icons'; 
 import axios from 'axios';
+import GetLocation from 'react-native-get-location'
 
 
 
@@ -13,7 +14,10 @@ const  SignUpScreen = ({navigation}) => {
     const [passwordFocus, setPasswordFocus] = useState(false)
     const [confirmPasswordFocus, setConfirmPasswordFocus]= useState(false)
     const [showPassword, setShowPassword] = useState(false)
+    const [showPassword2, setShowPassword2] = useState(false)
     const [mobileFocus, setMobileFocus]= useState(false)
+    const [nameFocus, setNameFocus] =  useState(false)
+    const [locationFocus, setLocationFocus] = useState(false)
     const [showModal, setShowModal]= useState(false)
     const [transparency, setTrasparency] = useState(false)
     
@@ -24,6 +28,7 @@ const  SignUpScreen = ({navigation}) => {
     const[phoneNumber,setPhoneNumber]= useState(null)
     const[otp,setOtp] = useState(null)
     const[otp2,setOtp2] = useState(null)
+    const[address,setAddress] = useState(null)
 
 
     const showAlert1 = () =>{
@@ -50,11 +55,13 @@ const  SignUpScreen = ({navigation}) => {
       setTrasparency(false)
       axios({
         method:"POST",
-        url:'http://192.168.0.104:5000/sign-up',
+        url:'http://192.168.100.67:5000/sign-up',
         data:{
           password:password,
           email:email,
-          phoneNumber:phoneNumber
+          phoneNumber:phoneNumber,
+          fullName:fullName,
+          address:address
         }
        }).then(navigation.navigate('signin')).catch(error=> console.log(error))
     }
@@ -68,7 +75,7 @@ const  SignUpScreen = ({navigation}) => {
        e.preventDefault()
        axios({
         method:"POST",
-        url:'http://192.168.0.104:5000/verification',
+        url:'http://192.168.100.67:5000/verification',
         data:{
           email:email
         }
@@ -99,10 +106,18 @@ const  SignUpScreen = ({navigation}) => {
           </View>
       </Modal>
      <Text style={styles.title}>Sign Up</Text>
+     <View style={styles.inputout}>
+            <AntDesign name="user" size={24} color={nameFocus===true ? colors.white : colors.dark } />
+            <TextInput style={styles.input}  placeholder='Full Name' placeholderTextColor={nameFocus===true ? colors.white : colors.dark }
+            onFocus={()=>{ setNameFocus(true)+setEmailFocus(false)+setPasswordFocus(false)+setConfirmPasswordFocus(false)+setMobileFocus(false)+setLocationFocus(false)}}
+            onChangeText={e=>setFullName(e)}
+            value={fullName}
+            ></TextInput>
+        </View>
         <View style={styles.inputout}>
-            <AntDesign name="user" size={24} color={emailFocus===true ? colors.white : colors.dark } />
+            <MaterialCommunityIcons name="email" size={24} color={emailFocus===true ? colors.white : colors.dark } />
             <TextInput style={styles.input}  placeholder='Email' placeholderTextColor={emailFocus===true ? colors.white : colors.dark }
-            onFocus={()=>{ setEmailFocus(true)+setPasswordFocus(false)+setConfirmPasswordFocus(false)+setMobileFocus(false)}}
+            onFocus={()=>{ setEmailFocus(true)+setPasswordFocus(false)+setConfirmPasswordFocus(false)+setMobileFocus(false)+setLocationFocus(false)+setNameFocus(false)}}
             onChangeText={e=>setEmail(e)}
             value={email}
             ></TextInput>
@@ -111,7 +126,7 @@ const  SignUpScreen = ({navigation}) => {
         <AntDesign name="lock" size={24}  color={passwordFocus===true ? colors.white : colors.dark} />
             <TextInput style={styles.input} secureTextEntry={showPassword===true? false : true} placeholder='Password'
              placeholderTextColor={passwordFocus===true ? colors.white : colors.dark }
-               onFocus={()=>{ setPasswordFocus(true)+setEmailFocus(false) + setConfirmPasswordFocus(false) + setMobileFocus(false)}}
+               onFocus={()=>{ setPasswordFocus(true)+setEmailFocus(false) + setConfirmPasswordFocus(false) + setMobileFocus(false)+setLocationFocus(false)+setNameFocus(false)}}
                onChangeText={e=>setPassword(e)}
                value={password}></TextInput>
              <Ionicons name={showPassword ==false? "eye-off" : 'eye'} size={24}  color={passwordFocus===true ? colors.white : colors.dark}
@@ -120,12 +135,12 @@ const  SignUpScreen = ({navigation}) => {
 
         <View style={styles.inputout}>
         <AntDesign name="lock" size={24}  color={confirmPasswordFocus===true ? colors.white : colors.dark} />
-            <TextInput style={styles.input} secureTextEntry={showPassword===true? false : true} placeholder='Confirm Password'
+            <TextInput style={styles.input} secureTextEntry={showPassword2===true? false : true} placeholder='Confirm Password'
              placeholderTextColor={confirmPasswordFocus===true ? colors.white : colors.dark }
-               onFocus={()=>{ setConfirmPasswordFocus(true)+setPasswordFocus(false)+setEmailFocus(false)+setMobileFocus(false)}}
+               onFocus={()=>{ setConfirmPasswordFocus(true)+setPasswordFocus(false)+setEmailFocus(false)+setMobileFocus(false)+setLocationFocus(false)+setNameFocus(false)}}
                ></TextInput>
-             <Ionicons name={showPassword ==false? "eye-off" : 'eye'} size={24}  color={confirmPasswordFocus===true ? colors.white : colors.dark}
-             onPress={()=>(setShowPassword(!showPassword))}/>
+             <Ionicons name={showPassword2 ==false? "eye-off" : 'eye'} size={24}  color={confirmPasswordFocus===true ? colors.white : colors.dark}
+             onPress={()=>(setShowPassword2(!showPassword2))}/>
         </View>
 
         <View style={styles.inputout}>
@@ -135,6 +150,24 @@ const  SignUpScreen = ({navigation}) => {
                onFocus={()=>{setMobileFocus(true)+ setConfirmPasswordFocus(false)+setPasswordFocus(false)+setEmailFocus(false)}}
                onChangeText={e=>setPhoneNumber(e)}
                 value={phoneNumber} ></TextInput>
+            
+        </View>
+
+        <View style={styles.inputout}>
+        <SimpleLineIcons name="location-pin" size={24}  color={locationFocus===true ? colors.white : colors.dark} 
+      //   onPress={()=>GetLocation.getCurrentPosition({
+      //     enableHighAccuracy: true,
+      //     timeout: 60000,
+      // })
+      // .then(location => {
+      //     console.log(location);
+      // })} 
+      />
+            <TextInput name='location' k style={styles.input}  placeholder='Address'
+             placeholderTextColor={locationFocus===true ? colors.white : colors.dark }
+               onFocus={()=>{setLocationFocus(true)+setMobileFocus(false)+ setConfirmPasswordFocus(false)+setPasswordFocus(false)+setEmailFocus(false)+setNameFocus(false)}}
+               onChangeText={e=>setAddress(e)}
+                value={address} ></TextInput>
             
         </View>
        

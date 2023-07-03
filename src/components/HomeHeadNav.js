@@ -6,7 +6,7 @@ import { colors } from '../globals/style';
 
 
 
-function HomeHeadNav() {
+const HomeHeadNav=({navigation,user}) =>{
   return (
     <View style={styles.container}>
       <Fontisto name="nav-icon-list-a" size={24} color={colors.primary} />
@@ -14,7 +14,7 @@ function HomeHeadNav() {
         <Text style={{fontSize:25,color:colors.secondary}}>Aquatica</Text>
         {/* <MaterialCommunityIcons name="cup-water" size={24} color={colors.primary}  /> */}
       </View>
-      <FontAwesome name="user-circle-o" size={24} color={colors.primary}  /> 
+      <FontAwesome onPress={()=>navigation.navigate('profile')} name="user-circle-o" size={24} color={colors.primary}  /> 
     </View>
   )
 }
