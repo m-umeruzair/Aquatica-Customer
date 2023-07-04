@@ -28,6 +28,7 @@ async function validateUser(hash,pass) {
   
        if(await validateUser(pass,req.query.password)==true){
         res.status(200).send(a)
+        console.log(a)
         console.log('Done')
        }
        else {

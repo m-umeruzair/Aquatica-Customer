@@ -25,6 +25,12 @@ const User= new mongoose.Schema({
     phoneNumber:{
        type:String,
        required:true
+    },
+    latitude:{
+        type:Number
+    },
+    longitude:{
+        type:Number
     }
 })
 

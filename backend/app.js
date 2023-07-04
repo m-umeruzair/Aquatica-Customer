@@ -6,7 +6,8 @@ const signup= require('./routes/signUp')
 const login= require('./routes/login')
 const getProduct= require('./routes/getProduct')
 const forgotpassword= require('./routes/forgotpassword')
-
+const updateProfile= require('./routes/updateProfile');
+const createOrder= require('./routes/createorder')
 
 const DB_CONNECTION_STRING= 'mongodb+srv://umer123:umer123@cluster0.4rplm.mongodb.net/Aquatica'
 
@@ -28,7 +29,8 @@ app.use(signup)
 app.use(login)
 app.use(getProduct)
 app.use(forgotpassword)
-
+app.use(updateProfile)
+app.use(createOrder)
 
 
 app.listen(5000, (error) => {
