@@ -14,7 +14,22 @@ const orderSchema = new mongoose.Schema({
     type:String
   },
   orderDate:{
-    type:Date
+    type:String
+  },
+  latitude:{
+   type:String
+  },
+  longitude:{
+    type:String
+  },
+  customerName:{
+    type:String,
+  },
+  customerNumber:{
+    type:String
+  },
+  orderAmount:{
+    type:Number
   }
 })
 

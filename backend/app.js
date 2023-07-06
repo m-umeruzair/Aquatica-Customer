@@ -9,7 +9,7 @@ const forgotpassword= require('./routes/forgotpassword')
 const updateProfile= require('./routes/updateProfile');
 const createOrder= require('./routes/createorder')
 
-const DB_CONNECTION_STRING= 'mongodb+srv://umer123:umer123@cluster0.4rplm.mongodb.net/Aquatica'
+
 
 
 
@@ -20,7 +20,8 @@ app.use(express.json())
 const corsOptions = {
     exposedHeaders: "x-auth-token",
   };
-  
+
+  const DB_CONNECTION_STRING= process.env.db
 app.use(cors());
 app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
@@ -33,7 +34,7 @@ app.use(updateProfile)
 app.use(createOrder)
 
 
-app.listen(5000, (error) => {
+app.listen(process.env.PORT, (error) => {
   
     if (error) {
       console.error("Error Occurred while connecting to server: ", error);

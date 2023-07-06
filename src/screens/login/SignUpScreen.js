@@ -4,7 +4,8 @@ import {colors,hr80} from '../../globals/style'
 import logo from '../../../assets/logo.png'
 import { AntDesign,Ionicons,SimpleLineIcons,MaterialCommunityIcons } from '@expo/vector-icons'; 
 import axios from 'axios';
-import GetLocation from 'react-native-get-location'
+import * as Location from 'expo-location';
+
 
 
 
@@ -19,18 +20,51 @@ const  SignUpScreen = ({navigation}) => {
     const [nameFocus, setNameFocus] =  useState(false)
     const [locationFocus, setLocationFocus] = useState(false)
     const [showModal, setShowModal]= useState(false)
-    const [transparency, setTrasparency] = useState(false)
+    const [transparency, setTransparency] = useState(false)
     
 
     const[fullName,setFullName] = useState(null)
     const[password,setPassword]= useState(null)
+    const[password2,setPassword2]= useState(null)
     const[email,setEmail]= useState(null)
     const[phoneNumber,setPhoneNumber]= useState(null)
     const[otp,setOtp] = useState(null)
     const[otp2,setOtp2] = useState(null)
     const[address,setAddress] = useState(null)
-
-
+    const[addressText,setaddressText] = useState(null)
+    const [latitude,setLatitude] = useState(null)
+    const [longitude, setLongitude]= useState(null)
+    
+    
+    const handleIconPress = async () => {
+      // Check if permission to access location is granted
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Permission to access location was denied');
+        return;
+      }
+    
+      try {
+        // Get the user's current location
+        const location = await Location.getCurrentPositionAsync({});
+     //   setCurrentLocation(location.coords)
+      //  console.log(currentLocation)
+       
+        const { latitude, longitude } = location.coords;
+        axios.get(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=AIzaSyD7AAsgR3TknpA52QdTJzhUBqVfbGwzGuY`).then(res=>{
+          setAddress(res.data.results[0].formatted_address)
+          setLatitude(latitude)
+          setLongitude(longitude)
+          console.log(res.data.results[0].formatted_address)
+        })
+    
+        console.log('User location:', latitude, longitude);
+        // Use latitude and longitude for further processing
+      } catch (error) {
+        console.log('Error retrieving location:', error);
+      }
+    };
+ 
     const showAlert1 = () =>{
       Alert.alert(
          'OTP Verified and Sign Up is successfull'
@@ -41,27 +75,47 @@ const  SignUpScreen = ({navigation}) => {
    const showAlert2 = () =>{
     Alert.alert(
        'Wrong OTP'
-    )
+    )}
+
+    const showAlert4 = () =>{
+      Alert.alert(
+         'Invalid Email Address'
+      )
+    }
+
+    const showAlert5 = () =>{
+      Alert.alert(
+         'Invalid or Missing Fields'
+      )
+    }
+
+    const showAlert6 = () =>{
+      Alert.alert(
+         'Password and confirm password do not match'
+      )
+    }
 
  
     
- }
+ 
    function signup2(){
     console.log("1:"+otp)
     console.log("2:"+otp2)
     
     if(otp==otp2){
       showAlert1()
-      setTrasparency(false)
+      setTransparency(false)
       axios({
         method:"POST",
-        url:'http://192.168.100.67:5000/sign-up',
+        url:'http://192.168.18.133:5000/sign-up',
         data:{
           password:password,
           email:email,
           phoneNumber:phoneNumber,
           fullName:fullName,
-          address:address
+          address:address,
+          longitude:longitude,
+          latitude:latitude
         }
        }).then(navigation.navigate('signin')).catch(error=> console.log(error))
     }
@@ -73,17 +127,28 @@ const  SignUpScreen = ({navigation}) => {
     
    function signUp(e){
        e.preventDefault()
+       let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+       if(reg.test(email)==false){
+        showAlert4()
+       }
+       else if(password==null || email==null || password2==null || fullName==null || address==null){
+       showAlert5()
+       }
+       else if(password!=password2){
+        showAlert6()
+       }
+       else{
        axios({
         method:"POST",
-        url:'http://192.168.100.67:5000/verification',
+        url:'http://192.168.18.133:5000/verification',
         data:{
           email:email
         }
        }).then((response)=>{
              setOtp2(response.data)
              setShowModal(true)
-             setTrasparency(true)
-       }).catch(error => console.log(error))
+             setTransparency(true)
+       }).catch(error => console.log(error)) }
    } 
 
   return (
@@ -100,7 +165,7 @@ const  SignUpScreen = ({navigation}) => {
          <TouchableHighlight onPress = {signup2}>  
           <Text style = {styles.modalVerify}>Verify OTP</Text>
           </TouchableHighlight>
-         <TouchableHighlight onPress = {() => {setShowModal(false)+setTrasparency(false)}}>  
+         <TouchableHighlight onPress = {() => {setShowModal(false)+setTransparency(false)}}>  
           <Text style = {styles.modalClose}>Close Modal</Text>
           </TouchableHighlight></View>
           </View>
@@ -138,7 +203,7 @@ const  SignUpScreen = ({navigation}) => {
             <TextInput style={styles.input} secureTextEntry={showPassword2===true? false : true} placeholder='Confirm Password'
              placeholderTextColor={confirmPasswordFocus===true ? colors.white : colors.dark }
                onFocus={()=>{ setConfirmPasswordFocus(true)+setPasswordFocus(false)+setEmailFocus(false)+setMobileFocus(false)+setLocationFocus(false)+setNameFocus(false)}}
-               ></TextInput>
+               onChangeText={e=>setPassword2(e)}value={password2} ></TextInput>
              <Ionicons name={showPassword2 ==false? "eye-off" : 'eye'} size={24}  color={confirmPasswordFocus===true ? colors.white : colors.dark}
              onPress={()=>(setShowPassword2(!showPassword2))}/>
         </View>
@@ -152,24 +217,19 @@ const  SignUpScreen = ({navigation}) => {
                 value={phoneNumber} ></TextInput>
             
         </View>
-
-        <View style={styles.inputout}>
-        <SimpleLineIcons name="location-pin" size={24}  color={locationFocus===true ? colors.white : colors.dark} 
-      //   onPress={()=>GetLocation.getCurrentPosition({
-      //     enableHighAccuracy: true,
-      //     timeout: 60000,
-      // })
-      // .then(location => {
-      //     console.log(location);
-      // })} 
-      />
-            <TextInput name='location' k style={styles.input}  placeholder='Address'
+   
+       
+      
+        <TouchableOpacity style={styles.inputout}  onPress={handleIconPress}>
+        <SimpleLineIcons name="location-pin" size={24}  color={locationFocus===true ? colors.white : colors.dark} />
+            <Text name='location' k style={styles.input}  placeholder='Address'
              placeholderTextColor={locationFocus===true ? colors.white : colors.dark }
                onFocus={()=>{setLocationFocus(true)+setMobileFocus(false)+ setConfirmPasswordFocus(false)+setPasswordFocus(false)+setEmailFocus(false)+setNameFocus(false)}}
                onChangeText={e=>setAddress(e)}
-                value={address} ></TextInput>
-            
-        </View>
+                value={address} >{address}</Text>
+               </TouchableOpacity>
+       
+     
        
         <TouchableOpacity style={styles.btn} onPress={signUp}><Text style={styles.btnText}>Sign Up</Text></TouchableOpacity>
 

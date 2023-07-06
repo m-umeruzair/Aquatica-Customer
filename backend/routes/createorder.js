@@ -11,7 +11,13 @@ router.post('/createOrder',async(req,res)=>{
    const order= new Order({
     orderItems:orderItems,
     orderPlacedby:orderPlacedby,
-    orderStatus:orderStatus
+    orderStatus:orderStatus,
+    latitude:req.body.latitude,
+    longitude:req.body.longitude,
+    orderDate:req.body.orderDate,
+    customerName:req.body.customerName,
+    customerNumber:req.body.customerNumber,
+    orderAmount:req.body.orderAmount
    })
    const save= await order.save()
    res.status(200).send(order)

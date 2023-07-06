@@ -21,7 +21,7 @@ const ChangePassword = ({route,navigation}) => {
  }
 
   function updatePassword(){
-    axios.put('http://192.168.100.67:5000/updatepassword',{data:{
+    axios.put('http://192.168.18.133:5000/updatepassword',{data:{
       email:params.email,
       password:password
     }}).then((response)=>{

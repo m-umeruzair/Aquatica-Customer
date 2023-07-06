@@ -6,13 +6,17 @@ import HomeHeadNav from '../components/HomeHeadNav'
 import { TouchableOpacity } from 'react-native'
 import axios from 'axios'
 import Card from '../components/card'
-const Product = ({route,navigation}) => {
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const Product = ({route,navigation,user}) => {
    const [quantity,setQuantity]= useState(0)
-   const params= route.params
+    const params= route.params
+    var user= params.user
+  
+   var k=0
   //  console.log(params.productType)
 
    const [data,setData]= useState(null)
-   axios.get('http://192.168.100.67:5000/readProduct',{
+   axios.get('http://192.168.18.133:5000/readProduct',{
     params:{
       productType:params.productType
     }
@@ -22,12 +26,14 @@ const Product = ({route,navigation}) => {
    
   return (
     <View style={styles.container}>
-        <HomeHeadNav/>
+        <HomeHeadNav user={user}  navigation={navigation}/>
         <ScrollView style={styles.scrollview}>
-        {data?.map((el,i)=>(
-          <Card  productName={el.productName} productCompany={el.productCompany} productPrice={el.productPrice} />
-        
-        ))}
+        {data?.map((el,i)=>{
+          
+          return(
+          <Card key={el._id}  productName={el.productName} productCompany={el.productCompany} productPrice={el.productPrice} id={el._id+i} />
+        )}
+        )}
 
         </ScrollView>
 

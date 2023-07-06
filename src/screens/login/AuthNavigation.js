@@ -9,6 +9,8 @@ import Categories from '../../components/Categories';
 import ForgotPassword from './ForgotPassword';
 import ChangePassword from './ChangePassword';
 import Profile from '../Profile';
+import Cart from '../Cart';
+
 
 
 
@@ -28,6 +30,7 @@ const AuthNavigation = () => {
         <Stack.Screen name="forgotpassword" component={ForgotPassword} options={{headerShown:false}}/>
         <Stack.Screen name="changepassword" component={ChangePassword} options={{headerShown:false}}/>
         <Stack.Screen name="profile" component={Profile} options={{headerShown:false}}/>
+        <Stack.Screen name='cart' component={Cart} options={{headerShown:false}}/>
     </Stack.Navigator>
   )
 }

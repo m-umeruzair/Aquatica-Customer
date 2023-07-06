@@ -7,14 +7,14 @@ import dispenser from '../../assets/home/dispenser.jpg'
 import axios from 'axios'
 
 
-const Categories = ({navigation}) => {
-  
+const Categories = ({user,navigation}) => {
+ 
   return (
     
 
     <View style={styles.container}>
       <Text style={styles.head}>Categories</Text>
-      <TouchableOpacity onPress={()=>navigation.navigate('products',{productType:'Water tanker'})}> 
+      <TouchableOpacity onPress={()=>navigation.navigate('products',{productType:'Water tanker',user:user})}> 
       <View  style={styles.main_card}>
         <Image source={tanker} resizeMode='cover' style={{
             height: 80,
@@ -28,7 +28,7 @@ const Categories = ({navigation}) => {
       </TouchableOpacity>
       <View style={{flexDirection:'row'}}>
       <View  style={styles.main_card2}>
-        <TouchableOpacity onPress={()=>navigation.navigate('products',{productType:'Dispenser Bottle'})}>
+        <TouchableOpacity onPress={()=>navigation.navigate('products',{productType:'Dispenser Bottle',user:user})}>
         <Image source={dispenser} style={{
             resizeMode: 'contain',
             height: 80,
@@ -40,7 +40,7 @@ const Categories = ({navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.main_card2}>
-      <TouchableOpacity onPress={()=>navigation.navigate('products',{productType:'Water bottle'})}>
+      <TouchableOpacity onPress={()=>navigation.navigate('products',{productType:'Water bottle',user:user})}>
         <Image source={water} style={{
             resizeMode: 'contain',
             height: 100,

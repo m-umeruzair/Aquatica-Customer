@@ -7,17 +7,20 @@ import { AntDesign } from '@expo/vector-icons';
 import { colors } from '../globals/style'
 
 
-const HomeScreen = ({navigation}) => {
+const HomeScreen = ({navigation,route}) => {
+  const params=route.params
+  const user=params.user
+  //console.log(params.user)
   return (
     <View style={styles.container}>
         <StatusBar />
-        <HomeHeadNav navigation={navigation}/>
+        <HomeHeadNav user={user} navigation={navigation}/>
         {/* <View style={styles.searchbox}>
         <AntDesign name="search1" size={24} color="black" />
         <TextInput style={styles.searchInput} placeholder='search'></TextInput>
         
         </View> */}
-       <Categories navigation={navigation}/>
+       <Categories user={user} navigation={navigation}/>
        <OfferSlider/>
     </View>
   )

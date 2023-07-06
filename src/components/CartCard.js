@@ -1,40 +1,13 @@
-import React, { useState } from 'react'
 import { StyleSheet, Text, View,Image,ScrollView } from 'react-native'
 import { TouchableOpacity } from 'react-native'
 import { colors } from '../globals/style'
+import React, { useState } from 'react'
 import water from '../../assets/home/water.jpg'
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from '@react-native-async-storage/async-storage'
 
-const Card = (props,navigation) => {
- 
-  const handleButtonClick = async () => {
-    try {
-      // Retrieve the existing array from AsyncStorage
-      const existingArray = await AsyncStorage.getItem('@cart');
-  
-      let newArray = [];
-  
-      if (existingArray) {
-        // If the array already exists, parse and assign it to the new array
-        newArray = JSON.parse(existingArray);
-      }
-      for (let i = 0; i < quantity; i++) {
-      // Create a new object and add it to the array
-      var newObject = props; // Replace with your object structure
-      newObject.id=newObject.id+i
-      console.log(newObject)
-      newArray.push(newObject);
-      }
-      // Save the updated array back to AsyncStorage
-      await AsyncStorage.setItem('@cart', JSON.stringify(newArray));
-  
-      console.log('Object added successfully');
-    } catch (error) {
-      console.log('Error adding object: ', error);
-    }
-  };
-
+const CartCard = (props,navigation) => {
     const [quantity,setQuantity]= useState(1)
+  
   return (
     <View style={styles.card}>
     <View style={styles.imageContainer}>
@@ -44,27 +17,33 @@ const Card = (props,navigation) => {
     <View style={styles.textc1}>
     <Text style={styles.text}>{props.productName}</Text>
     <Text style={styles.text2}>{props.productCompany}</Text>
-    <Text style={{fontSize:10}}>This is a small description of product that we can enter here so that users can see.</Text>
+  
     </View>
     <View  style={styles.textc2}>
       <Text style={{fontWeight:'700'}}>{props.productPrice+' Rs'}</Text>
-    <View style={styles.quantityCounter}>
+    {/* <View style={styles.quantityCounter}>
       <TouchableOpacity onPress={()=>setQuantity(quantity+1)}><Text style={[styles.quantityControl]}>+</Text></TouchableOpacity>
       <Text style={styles.quantityBox}>{quantity}</Text>
-      <TouchableOpacity><Text  onPress={()=>{
-        if(quantity > 0){setQuantity(quantity-1)}}
+      <TouchableOpacity><Text  onPress={()=>setQuantity(quantity-1)} style={[styles.quantityControl,{fontSize:20}]} >-</Text></TouchableOpacity>
+    </View> */}
+      <TouchableOpacity onPress={()=>{
+         const updatedData = props.data.filter((item) => item !== props.el);
+         props.setData(updatedData);
+         AsyncStorage.setItem('@cart', JSON.stringify(updatedData));
         
-        } style={[styles.quantityControl,{fontSize:20}]} >-</Text></TouchableOpacity>
-    </View>
-      <TouchableOpacity onPress={handleButtonClick}>
-    <Text style={styles.btn} >Add To Cart</Text>
+        // props.setData(props.data.splice(props.data.indexOf(props.el), 1))
+        // var temp = props.data.splice(props.data.indexOf(props.el), 1)
+        // AsyncStorage.setItem('@cart',JSON.stringify(temp))
+        console.log(props.data)
+      }} style={{alignItems:'flex-end'}}>
+    <Text style={styles.btn}>Remove</Text>
     </TouchableOpacity>
     </View>
  </View>
   )
 }
 
-export default Card
+export default CartCard
 
 const styles = StyleSheet.create({
     container: {
@@ -129,7 +108,8 @@ const styles = StyleSheet.create({
       padding:10,
       flexDirection:'column',
       gap:10,
-      alignItems:'center'
+      alignItems:'center',
+      justifyContent:'space-evenly'
     },
     btn:{
       color:colors.white,

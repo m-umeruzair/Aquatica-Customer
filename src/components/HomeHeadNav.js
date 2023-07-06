@@ -1,21 +1,26 @@
 import React from 'react'
 import { View, Text, StyleSheet,StatusBar,TextInput } from 'react-native'
-import { Fontisto,MaterialCommunityIcons,FontAwesome } from '@expo/vector-icons';
+import { Fontisto,MaterialCommunityIcons,FontAwesome,AntDesign,Entypo } from '@expo/vector-icons';
 import { colors } from '../globals/style';
 
 
 
 
 const HomeHeadNav=({navigation,user}) =>{
+  
   return (
     <View style={styles.container}>
-      <Fontisto name="nav-icon-list-a" size={24} color={colors.primary} />
+      <Entypo name="log-out" size={28} color={colors.primary} onPress={()=>{navigation.navigate('signin',{user:user})}}/>
       <View style={styles.containerin}>
-        <Text style={{fontSize:25,color:colors.secondary}}>Aquatica</Text>
+        <Text style={{fontSize:28,color:colors.secondary}}>Aquatica</Text>
+        
         {/* <MaterialCommunityIcons name="cup-water" size={24} color={colors.primary}  /> */}
       </View>
-      <FontAwesome onPress={()=>navigation.navigate('profile')} name="user-circle-o" size={24} color={colors.primary}  /> 
-    </View>
+      <View style={{flexDirection:'row',gap:5}}>
+       <AntDesign name="shoppingcart" size={28} color={colors.primary} onPress={()=>navigation.navigate('cart',{user:user})}/>
+      <FontAwesome onPress={()=>navigation.navigate('profile',{user:user})} name="user-circle-o" size={24} color={colors.primary}  /> 
+      </View>
+    </View>  
   )
 }
 

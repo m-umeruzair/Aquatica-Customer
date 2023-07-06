@@ -36,7 +36,7 @@ export const LoginScreen = ({navigation}) => {
 
   async function SignIn(e){
     e.preventDefault()
-    await axios.get('http://192.168.100.67:5000/log-in',{
+    await axios.get('http://192.168.18.133:5000/log-in',{
     params:{
         email:email,
         password:password
@@ -44,8 +44,8 @@ export const LoginScreen = ({navigation}) => {
   }).then((response)=>{
     if(response.status == 200){
        showAlert1()
-       user=a
-       navigation.navigate('home',{email:email})
+       user=response.data[0]
+       navigation.navigate('home',{user:user})
     }
    
   }).catch(error=> {

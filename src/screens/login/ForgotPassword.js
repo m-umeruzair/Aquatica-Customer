@@ -33,7 +33,7 @@ const ForgotPassword = ({navigation}) => {
         e.preventDefault()
         axios({
          method:"POST",
-         url:'http://192.168.100.67:5000/verification',
+         url:'http://192.168.18.133:5000/verification',
          data:{
            email:email
          }
