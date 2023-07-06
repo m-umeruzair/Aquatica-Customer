@@ -31,7 +31,7 @@ const Product = ({route,navigation,user}) => {
         {data?.map((el,i)=>{
           
           return(
-          <Card key={el._id}  productName={el.productName} productCompany={el.productCompany} productPrice={el.productPrice} id={el._id+i} />
+          <Card key={el._id} productID={el._id} productName={el.productName} productCompany={el.productCompany} productPrice={el.productPrice} id={el._id+i} />
         )}
         )}
 
